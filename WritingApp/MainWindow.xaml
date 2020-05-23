@@ -1,0 +1,252 @@
+﻿<Window x:Class="WritingApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WritingApp"
+        x:Name="AppWindow"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        mc:Ignorable="d"
+        Loaded="Window_Loaded"
+        MinHeight="{Binding WindowMinimumHeight}" MinWidth="{Binding WindowMinimumWidth}"
+        Title="Writing app" Height="900" Width="900">
+
+
+    <Window.Resources>
+
+        <Style TargetType="{x:Type local:MainWindow}">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type Window}">
+                        
+                        <!--Outer Border with the dropping shadow-->
+                        <Border Padding="{Binding OuterMarginSizeThickness, FallbackValue=10}">
+                            
+                            <!--Main window outline-->
+                            <Grid>
+                                <!--Opacity mask for corners on grid-->
+                                <Border x:Name="Container"
+                                        Background="{StaticResource LightYellowBrush}"
+                                        CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}"/>
+
+                                <!--Window Border with resizeble outline margin-->
+                                <Border CornerRadius="{Binding WindowCornerRadius, FallbackValue=10}"
+                                        Background="{StaticResource LightYellowBrush}">
+
+                                    <Border.Effect>
+                                        <DropShadowEffect ShadowDepth="0" Opacity="0.2"/>
+                                    </Border.Effect>
+                                </Border>
+                                
+                                <!--The main Window content-->
+                                <Grid>
+                                    
+                                    <!--Corner clipping-->
+                                    <Grid.OpacityMask>
+                                        <VisualBrush Visual="{Binding ElementName=Container}"/>
+                                    </Grid.OpacityMask>
+
+                                    <Grid.RowDefinitions>
+                                        <!--Title bar-->
+                                        <RowDefinition Height="{Binding TitleHeightGridLenght, FallbackValue=26}"/>
+                                        
+                                        <!--Window Content-->
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <!--Title bar-->
+                                    <Grid Grid.Column="0" Background="{StaticResource WarmYellowBrush}">
+                                        <Grid.ColumnDefinitions>
+                                            <!--Icon-->
+                                            <ColumnDefinition Width="Auto"/>
+                                            <!--Title-->
+                                            <ColumnDefinition Width="*"/>
+                                            <!--Window Buttons-->
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <!--Icon-->
+                                        <Button Style="{StaticResource SystemIconButton}" Command="{Binding MenuCommand}">
+                                            <Image Source="/Images/pen_icon.png"/>
+                                        </Button>
+                                        
+                                        <!--Title-->
+                                        <Viewbox Grid.Column="1" Margin="10 0" HorizontalAlignment="Left">
+                                            <TextBlock Style="{StaticResource HeaderTitle}" 
+                                                       Text="{Binding RelativeSource={RelativeSource TemplatedParent}, 
+                                                              Path=Title, FallbackValue='Writing app'}"/>
+                                        </Viewbox>
+                                        
+                                        <!--Window Buttons-->
+                                        <StackPanel Grid.Column="2" Orientation="Horizontal">
+                                            <Button Style="{StaticResource WindowControlButton}" Command="{Binding MinimizeCommand}" Content="_"/>
+                                            <Button Style="{StaticResource WindowControlButton}" Command="{Binding MaximizeCommand}" Content="[  ]"/>
+                                            <Button Style="{StaticResource WindowControlButton}" Command="{Binding CloseCommand}" Content="X"/>
+                                            
+                                        </StackPanel>
+
+                                    </Grid>
+                                    
+                                    <!--Window Content-->
+                                    <Border Grid.Row="2" Padding="{Binding InnerContentPadding}">
+                                        <ContentPresenter Content="{TemplateBinding Content}"/>
+                                    </Border>
+                                    
+                                </Grid>
+                                
+                                
+                            </Grid>
+                            
+                        </Border>
+                        
+                        
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <!--Window Chrome-->
+    <WindowChrome.WindowChrome>
+        <WindowChrome 
+            ResizeBorderThickness="{Binding ResizeBorderThickness}"
+            CaptionHeight="{Binding TitleHeight}"
+            GlassFrameThickness="0"
+            CornerRadius="0"/>
+    </WindowChrome.WindowChrome>
+    
+    
+    
+    
+    
+    
+    <Grid>
+        <!--Split the screen into top panel and body-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <!--Top Panel for the buttons and the title-->
+        <Grid x:Name="topPanel" VerticalAlignment="Top" Height="40" Background="{StaticResource LightYellowBrush}">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            
+                <StackPanel Orientation="Horizontal" Background="Transparent">
+
+                <Button x:Name="toggleButton" 
+                        Content="\|/" 
+                        Style="{StaticResource TopPanelButtons}"/>
+                    
+                <Button x:Name="searchButton" 
+                        Style="{StaticResource TopPanelButtons}"
+                        Content="S" 
+                        />
+
+                    <Button x:Name="deleteButton" 
+                        Style="{StaticResource TopPanelButtons}"
+                        Content="-" 
+                        />
+
+                    <Button x:Name="addButton" 
+                        Style="{StaticResource TopPanelButtons}"
+                        Content="+" 
+                        />
+
+                    <Button x:Name="Button" 
+                        Style="{StaticResource TopPanelButtons}"
+                        Content="+"
+                        />
+                
+                </StackPanel>
+
+
+            <Viewbox HorizontalAlignment="Center" Grid.Column="1">
+                    <TextBlock Style="{StaticResource PaperTitle}" Text="Title of the paper"/>
+                </Viewbox>
+
+            <!--<Grid Grid.Column="2" Background="Transparent">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Background="Transparent">
+
+                    <Button x:Name="noSplitButton"
+                            Style="{StaticResource TopPanelButtons}"
+                            Content=""
+                            />
+
+                    <Button x:Name="splitVerticalButton"
+                            Style="{StaticResource TopPanelButtons}"
+                            Content="|"
+                            Margin=" 10 0"/>
+                        
+                        <Button x:Name="splitHorizontalButton"
+                                Style="{StaticResource TopPanelButtons}"
+                                Content="-"
+                                />
+                        
+                    </StackPanel>
+                </Grid>-->
+                
+            
+        </Grid>
+        
+        <!--Body for directory panel and paper-->
+        <Grid x:Name="body" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+                <Grid x:Name="directoryPanel" HorizontalAlignment="Left" Width="220" Background="{StaticResource WarmYellowBrush}" Grid.Column="0">
+                
+                    <!--Tree view directory panel-->
+                    <TreeView Background="Transparent" Margin="5" x:Name="FolderView" Padding="5"> 
+                    <TreeView.Resources>
+
+                        <Style TargetType="{x:Type TreeViewItem}">
+                            <Setter Property="HeaderTemplate">
+                                <Setter.Value>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal" Margin="2">
+                                            <Image Width="18" 
+                                                   Source="{Binding RelativeSource={RelativeSource
+                                                                    Mode=FindAncestor, 
+                                                                    AncestorType={x:Type TreeViewItem}},
+                                                                    Path=Tag,
+                                                                    Converter={x:Static local:HeaderToImageConverter.Instance}}"/>
+                                            <TextBlock VerticalAlignment="Center" Text="{Binding}"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                        
+                    </TreeView.Resources>
+                </TreeView>
+                </Grid>
+            
+            <!--Paper Panel-->
+            <Grid x:Name="paperPanel" Grid.Column="1" Background="{StaticResource WarmOrangeBrush}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <TextBlock HorizontalAlignment="Center">This is where the formating panel is</TextBlock>
+                </Grid>
+                    <Grid Grid.Row="1">
+                        <TextBox Padding="10" Margin="10" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"/>
+                    </Grid>
+                </Grid>
+            
+            
+        </Grid>
+        
+    </Grid>
+</Window>
