@@ -1,13 +1,16 @@
 ﻿
-using FileManager;
 using System.Windows;
 using System.Windows.Input;
 
 namespace WritingApp
 {
-    class WindowViewModel : BaseViewModel
+    public class WindowViewModel : BaseViewModel
     {
         #region Private members
+        /// <summary>
+        /// create a new instance of Directory
+        /// </summary>
+        private DirectoryStructureViewModel mDirectory;
 
         /// <summary>
         /// The window this view model controls
@@ -27,6 +30,8 @@ namespace WritingApp
         #endregion
 
         #region Public Properties
+
+        public DirectoryStructureViewModel Directory { get { return mDirectory; } }
 
         /// <summary>
         /// Smallest Widt the window can go
@@ -132,6 +137,7 @@ namespace WritingApp
 
         public WindowViewModel(Window window)
         {
+            mDirectory = new DirectoryStructureViewModel();
             mWindow = window;
 
             mWindow.StateChanged += (sender, e) =>

@@ -61,6 +61,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Directory\Data\DirectoryItem.cs" />
+    <Compile Include="Directory\Data\DirectoryItemType.cs" />
+    <Compile Include="Directory\DirectoryStructure.cs" />
+    <Compile Include="Directory\ViewModels\DirectoryItemViewModel.cs" />
+    <Compile Include="Directory\ViewModels\DirectoryStructureViewModel.cs" />
     <Compile Include="ViewModel\Base\BaseViewModel.cs" />
     <Compile Include="ViewModel\Base\RelayCommand.cs" />
     <Compile Include="ViewModel\WindowViewModel.cs" />

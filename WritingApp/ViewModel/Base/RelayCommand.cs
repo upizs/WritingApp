@@ -2,7 +2,7 @@
 using System;
 using System.Windows.Input;
 
-namespace FileManager
+namespace WritingApp
 {
     /// <summary>
     /// A basic command that runs an Action
